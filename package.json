@@ -1,0 +1,30 @@
+{
+  "name": "todolistapi",
+  "version": "1.0.0",
+  "description": "RESTful ToDoListApi",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Hi\" && exit 1",
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/apoorva1012/todolistapi.git"
+  },
+  "keywords": [
+    "280"
+  ],
+  "author": "apoorva",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/apoorva1012/todolistapi/issues"
+  },
+  "homepage": "https://github.com/apoorva1012/todolistapi#readme",
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  },
+  "dependencies": {
+    "express": "^4.15.2",
+    "mongoose": "^4.9.7"
+  }
+}
