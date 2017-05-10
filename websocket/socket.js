@@ -25,13 +25,28 @@ server.listen(8080, '127.0.0.1', function() {
   });
 });
 
+
 var broadcast = function() {
-  var input = 0;
+  /*var input = 0;
   var sysMin = 40, sysMax = 120;
   var diaMin = 60, diaMax = 200;
   var systolic=parseInt(Math.random()*(sysMax-sysMin)+sysMin);
   var diastolic=parseInt(Math.random()*(diaMax-diaMin)+diaMin);
-  var json = JSON.stringify({ systolic:systolic, diastolic: diastolic});
+  var json = JSON.stringify({ systolic:systolic, diastolic: diastolic});*/
+
+  var bpMed = 0;
+  var sysMin = 40, sysMax = 120;
+  var diaMin = 60, diaMax = 200;
+  var tempMin = 97.4, tempMax = 106;
+  var hydMin = 50, hydMax = 180;
+  var gluMin = 40, gluMax = 400;
+
+  var systolic= parseInt(Math.random()*(sysMax-sysMin)+sysMin);
+  var diastolic= parseInt(Math.random()*(diaMax-diaMin)+diaMin);
+  var temperature = parseInt(Math.random()*(tempMax-tempMin)+tempMin);
+  var hydration = parseInt(Math.random()*(hydMax-diaMin)+hydMin);
+  var glucose = parseInt(Math.random()*(gluMax-diaMin)+gluMin);
+  var json = JSON.stringify({temperature: temperature, systolic: systolic, diastolic: diastolic, hydration: hydration, glucose: glucose});
 
   clients.forEach(function(stream) {
     stream.send(json);
