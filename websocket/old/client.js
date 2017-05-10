@@ -17,7 +17,7 @@ wss.onerror = function (event) {
 
 wss.onmessage = function (event) {
 var serverObject = JSON.parse(event.data);
-console.log(serverObject);
+console.log(serverObject.systolic);
 var text=serverObject.systolic + serverObject.diastolic;
 
 };
