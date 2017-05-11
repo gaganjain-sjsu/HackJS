@@ -43,7 +43,7 @@ exports.check_login = function(req, res) {
           }
           else{
             console.log("Passwords match");
-          connection.query("select hospital_id, hospital_name, city, state, country, zip from hospitals natural join address where zip in (select zip from hospital_doctor natural join hospitals where doctor_id=?)", userid, function (err, r) {
+          connection.query("select hospital_id, hospital_name, city, state, country, zip, latitude, longitude from hospitals natural join address where zip in (select zip from hospital_doctor natural join hospitals where doctor_id=?)", userid, function (err, r) {
           if (err) 
             throw err;
           console.log(r);
