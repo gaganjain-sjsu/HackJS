@@ -10,8 +10,8 @@ var pool      =    mysql.createPool({
     database: "patient_monitoring",
     debug    :  false
 });
-
-/*var con = mysql.createConnection({
+/*
+var con = mysql.createConnection({
   host     : 'aws.cbmuqc9mcupo.us-east-1.rds.amazonaws.com',
   user     : 'clouduser',
   password : 'cloud123',
@@ -20,42 +20,24 @@ var pool      =    mysql.createPool({
 
 exports.check_login = function(req, res) {
 
-  res.header('Access-Control-Allow-Origin', '*');
-  console.log(req.query);    
-  var userid = req.query.userid;
-  var userpassword = req.query.password;
-  pool.getConnection(function(err,connection){
-    if (err){
-        connection.release();
-        res.json({"code" : 100, "status" : "Error in connection database"});
-        return;
-    }
-    connection.query("SELECT password FROM login where userid=?", userid, function (err, result){
-            //
-      if(!err) {
-          console.log(result[0]["password"]);
-          var dbpass = result[0]["password"];
-          console.log(userpassword + " + " + dbpass);
-          if (userpassword!=dbpass) {
-            console.log("Passwords don't match"); 
-            //res.json({Status : 'False'});
-            res.json(JSON.stringify({Status : 'False'}));
-          }
-          else{
-            console.log("Passwords match");
-          connection.query("select hospital_id, hospital_name, city, state, country, zip from hospitals natural join address where zip in (select zip from hospital_doctor natural join hospitals where doctor_id=?)", userid, function (err, r) {
-          if (err) 
-            throw err;
-          console.log(r);
-          res.json(r);
-          //console.log(result);
-          })
-          }
-        }
-      })
-    connection.release(); 
-  });
-      
+    res.header('Access-Control-Allow-Origin', '*');
+    console.log(req.query);    
+    var userid = req.query.userid;
+    pool.getConnection(function(err,connection){
+      if (err){
+          connection.release();
+          res.json({"code" : 100, "status" : "Error in connection database"});
+          return;
+      }
+      connection.query("select hospital_id, hospital_name, city, state, country, zip from hospitals natural join address where zip in (select zip from hospital_doctor natural join hospitals where doctor_id=?)", userid, function (err, result) {
+      if (err) 
+        throw err;
+      console.log(result);
+      res.json(result);
+      //console.log(result);
+    })
+    connection.release();    
+    });
 }
   //res.end(JSON.stringify(req.body));
 
@@ -80,17 +62,36 @@ exports.check_login = function(req, res) {
       connection.release();  
   });
   
-}
+}*/
         //var user = req.body.split(',');
-        /*console.log(user["password"]);
+      /*  console.log(req.query);
+        var user = req.query;
+        console.log(user["password"]);
         var userpassword = user["password"];
         var dbpass;
         res.header('Access-Control-Allow-Origin', '*');
+        pool.getConnection(function(err,connection){
+            if (err) {
+              connection.release();
+              res.json({"code" : 100, "status" : "Error in connection database"});
+              return;
+            }   
 
-        connection.query("SELECT password FROM login where userid = ?", user["userid"], function (err, result){
+        console.log('connected as id ' + connection.threadId);
+        connection.query("select hospital_id, hospital_name, city, state, country, zip from hospitals natural join address where zip in (select zip from hospital_doctor natural join hospitals where doctor_id= ?)", user["userid"], function (err, r){ 
+        //connection.query("SELECT password FROM login where userid = ?", user["userid"], function (err, result){
             //
             if(!err) {
-                console.log(result[0]["password"]);
+                console.log(r);
+                res.json(r);
+            }
+          })
+        connection.release();
+        });
+      };
+      
+
+                /*console.log(result[0]["password"]);
                 dbpass = result[0]["password"];
                 console.log(userpassword + " + " + dbpass);
                 if (userpassword!=dbpass) {
@@ -99,11 +100,26 @@ exports.check_login = function(req, res) {
                   res.send(JSON.stringify({Status : 'False'}));
                 }
                 else{
-                  console.log("Passwords match");
-                  connection.query("select hospital_id, hospital_name, city, state, country, zip from hospitals natural join address where zip in (select zip from hospital_doctor natural join hospitals where doctor_id= ?)", user["userid"], function (err, r) {
-                  console.log(r);  
-                  if (!err){ 
-                      res.json(r);
+                  fetch_hospitals(connection,userid);
+                //   console.log("Passwords match");
+                //   connection.query("select hospital_id, hospital_name, city, state, country, zip from hospitals natural join address where zip in (select zip from hospital_doctor natural join hospitals where doctor_id= ?)", user["userid"], function (err, r) {
+                //   console.log(r);  
+                //   if (!err){ 
+                //       res.end(r);
+                //       console.log(res);
+                //   }
+                //   //res.send(r);
+                // })
+                }
+            }
+          })
+          connection.release();
+        });
+        // connection.on('error', function(err) {      
+        //       res.json({"code" : 100, "status" : "Error in connection database"});
+        //       return;     
+        // });
+      }
                       /*var usersRows = [];
                       var js = '';
                       /*console.log(r.length);
@@ -166,6 +182,27 @@ exports.check_login = function(req, res) {
   });*/
   
 //}
+
+/*exports.fetch_hospitals = function(connection, userid){
+
+  // pool.getConnection(function(err,connection){
+  //       if (err) {
+  //         connection.release();
+  //         res.json({"code" : 100, "status" : "Error in connection database"});
+  //         return;
+  //       }   
+
+        //console.log('connected as id ' + connection.threadId);
+        connection.query("select hospital_id, hospital_name, city, state, country, zip from hospitals natural join address where zip in (select zip from hospital_doctor natural join hospitals where doctor_id= ?)", userid, function (err, r) {
+        console.log(r);  
+        if (err){ 
+            //res.end(r);
+            //console.log(res);
+            throw err;
+        }
+        return r;
+};*/
+
 
 exports.list_all_tasks = function(req, res) {
   var input = 0;

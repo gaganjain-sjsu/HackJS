@@ -1,23 +1,14 @@
-function login() {
-    var userData = {
-        name: document.getElementById('username'),
-        password: document.getElementById('password')
-    };
-
-    $.ajax({
-        url: "http://localhost:3000/login",
-        type: "POST",
-        dataType: "json",
-        data: userData,
-        error: function (xhr, status) {
-            console.log("Sorry, there was a problem!");
-        },
-        complete: function (xhr, status) {
-            console.log(xhr);
-        }
-    });
+ function submitlogin() {
+        //alert("hihi")
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+      //alert("bibi");
+      //alert(this.readyState);
+      //alert(this.status);
+    if (this.readyState == 4 && this.status == 200) {
+     console.log(this.responseText);
+    }
+  };
+  xhttp.open("GET", "http://localhost:3000/login?userid="+document.getElementById('username').value + "&password="+ document.getElementById('password').value, true);
+  xhttp.send();
 }
-
-$('.message a').click(function(){
-   $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
-});
