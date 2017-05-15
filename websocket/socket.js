@@ -1,57 +1,38 @@
-var http = require('http');
-var express = require('express');
+var app = require('express')();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+var bpMed = 0, tempMed = 0, hydMed = 0, gluMed = 0;
+var medicine = { bpMed:0, tempMed:0, hydMed:0, gluMed: 0};
 
-var WebSocket = require('ws')
+//--POST ENDPOINT FOR MEDICINE INPUT--//
 
-var app = express().use(express.static('client'));
-var server = http.createServer(app);
-var clients = [];
+ app.post("/medicine", function(req, res) {          
+    io.sockets.emit("foo", req.body);
+    console.log("A client sent us this dumb message:" + req.body);    
+ });
 
-server.listen(8080, '127.0.0.1', function() {
-  var sse = new WebSocket.Server({server});
+var broadcast = function(medicine) {
+        var sysMin = 40, sysMax = 120;
+        var diaMin = 60, diaMax = 200;
+        var tempMin = 97, tempMax = 106;
+        var hydMin = 50, hydMax = 180;
+        var gluMin = 40, gluMax = 400;
 
-  sse.on('connection', function connection(stream) {
-    clients.push(stream);
-    console.log('Connection Opened');
+        var systolic= parseInt(Math.random()*(sysMax-sysMin)*(1-medicine.bpMed/200)+sysMin);
+        var diastolic= parseInt(Math.random()*(diaMax-diaMin)*(1-medicine.bpMed/200)+diaMin);
+        var temperature = parseInt(Math.random()*(tempMax-tempMin)+tempMin)*(1-medicine.tempMed/200);
+        var hydration = parseInt(Math.random()*(hydMax-diaMin)*(1-medicine.hydMed/200)+hydMin);
+        var glucose = parseInt(Math.random()*(gluMax-diaMin)*(1-medicine.gluMed/200)+gluMin);
 
-    var json = JSON.stringify({ Status: 'Connected' });
-    stream.send(json);
-    console.log('Sent: ' + json);
+        json = JSON.stringify({temperature: temperature, systolic: systolic, diastolic: diastolic, hydration: hydration, glucose: glucose})
+        return json;
+ }
 
-    stream.on('close', function() {
-      clients.splice(clients.indexOf(stream), 1);
-      console.log('Connection Closed');
-    });
-  });
+
+io.on('connection', function(socket) {
+    console.log("Sending data----" + medicine);
+    setInterval( function(){ socket.emit('announcements', broadcast(medicine))}, 500);
 });
 
 
-var broadcast = function() {
-  /*var input = 0;
-  var sysMin = 40, sysMax = 120;
-  var diaMin = 60, diaMax = 200;
-  var systolic=parseInt(Math.random()*(sysMax-sysMin)+sysMin);
-  var diastolic=parseInt(Math.random()*(diaMax-diaMin)+diaMin);
-  var json = JSON.stringify({ systolic:systolic, diastolic: diastolic});*/
-
-  var bpMed = 0;
-  var sysMin = 40, sysMax = 120;
-  var diaMin = 60, diaMax = 200;
-  var tempMin = 97.4, tempMax = 106;
-  var hydMin = 50, hydMax = 180;
-  var gluMin = 40, gluMax = 400;
-
-  var systolic= parseInt(Math.random()*(sysMax-sysMin)+sysMin);
-  var diastolic= parseInt(Math.random()*(diaMax-diaMin)+diaMin);
-  var temperature = parseInt(Math.random()*(tempMax-tempMin)+tempMin);
-  var hydration = parseInt(Math.random()*(hydMax-diaMin)+hydMin);
-  var glucose = parseInt(Math.random()*(gluMax-diaMin)+gluMin);
-  var json = JSON.stringify({temperature: temperature, systolic: systolic, diastolic: diastolic, hydration: hydration, glucose: glucose});
-
-  clients.forEach(function(stream) {
-    stream.send(json);
-    console.log('Sent: ' + json);
-  });
-
-}
-setInterval(broadcast, 2000)
+server.listen(8081);

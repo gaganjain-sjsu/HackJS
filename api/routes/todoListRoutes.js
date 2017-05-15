@@ -9,9 +9,9 @@ module.exports = function(app) {
     //.post(todoList.create_a_task);
   app.route('/patients')
     .get(todoList.list_all_patients)
-
   app.route('/login')
     .get(todoList.check_login)
+
   // app.route('/tasks/:taskId')
   //   .get(todoList.read_a_task)
   //   .put(todoList.update_a_task)

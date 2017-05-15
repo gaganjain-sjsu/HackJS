@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+ "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="description" content="Patient Monitoring System">
+    <meta name="keywords" content="CMPE280, SJSU, Health care, Project">
+    <meta name="author" content="HackJS">
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <link rel="author" href="https://www.linkedin.com/in/anshul-agrawal/">
+    <title>DashBoard</title> 
+    <link rel="stylesheet" href="css/style.css">
+      <link rel="stylesheet" type="text/css" href="css/profile.css">
+
+    <script src="js/dependencies/jquery-2.1.4.min.js"></script>
+    <script src="../graphics.js" charset="UTF-8" defer></script>
+    <script src="http://54.153.51.18:8081/socket.io/socket.io.js"></script> 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+   <script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
+}
+</script>
+
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script>
+        $(document).ready(function(){
+            var url = window.location.href;
+            $('.green-bg nav li a').each(function(){
+                url === this.href?$(this).addClass('active'):$(this).removeClass('active');
+            });
+            $('.green-bg nav li a').click(function(){
+                $('.green-bg nav li a').each(function(){
+                    $(this).removeClass('active');
+                });
+                $(this).addClass('active');
+            });
+            
+            
+            $('a[href="#userProfile1"]').click(function(){
+            document.getElementById("dashboard").style.display = "none";
+            document.getElementById("userProfile").style.display = "";
+}); 
+            
+                    $('a[href="#dashboard1"]').click(function(){
+ document.getElementById("dashboard").style.display = "";
+  document.getElementById("userProfile").style.display = "none";
+}); 
+        });  
+        
+        
+    </script>
+    <style>
+
+</style>
+</head>
+<body>
+
+        <div class="row wrapper">
+            <div class="col-md-12">
+                <header class="row">
+                    <div class="hidden-xs hidden-sm col-md-1">
+                        <div class="row">
+                            <div class="col-md-12"  id="logo">
+                                <a href=""><img src="images/logo.png" width="40"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                       
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                           
+                            <div class="col-xs-12 col-sm-12 col-md-4" id="profile">
+                                <div class="avatar">
+                                    <img id="doctorImage" src="images/800.jpg" width="40" alt="">
+                                    
+                                </div>
+                                <div class="dropdown" ><div class="description" data-toggle="dropdown" id="doctorName">Welcome<span class="caret"></span> </div>
+                                 <ul class="dropdown-menu ">
+      <li><a href="login.html">logout</a></li>
+
+    </ul> </div>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+                <div class="row green-bg">
+                    <div class="col-xs-2 col-sm-2 col-md-1">
+                        <nav>
+                            <li><a href="#dashboard1" class="active"><img src="images/dash.png" width="30"></a></li>
+                            <li><a href="#userProfile1"><img src="images/profile.png" width="30"></a></li>
+
+                        </nav>
+                    </div>
+                    <div class="col-xs-10 col-sm-10 col-md-11" id="dashboard">
+                        <div class="row pagename">
+                           
+                            <div class="col-sm-6 col-md-6" >Dashboard</div>
+                             <div class="col-sm-6 col-md-6">
+                            <div id="google_translate_element" class="pull-right"></div>
+                            </div>
+                        </div>
+                        <div class="row graphics pagination-container">
+                           <div id="patients">
+                            </div>
+                            <center>
+                            <div class="pagination">
+                            <ul id="pagination" class="pagination pagination-centered pagination-large">
+                            </ul>
+                            </div>
+                            </center>
+                        </div>           
+                    </div>
+                    <div class="col-xs-10 col-sm-10 col-md-11 container" id="userProfile" style="display:none" >
+                     <div class="row pagename">
+                              <div class="col-sm-12 col-md-12">Profile</div>
+                        </div>
+                    <div class="row graphics pagination-container" >
+      <div class="row">
+    
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xs-offset-0 col-sm-offset-0 col-md-offset-3 col-lg-offset-3 toppad" >
+         <br>
+         <br>
+          <div class="panel panel-info" id="profiles">
+           
+          </div>
+        </div>
+    
+      </div>
+    </div>
+                   </div>
+                    
+                </div>
+            </div>
+        </div>
+
+  <!-- Modal 1-->
+<div id="modals"></div>   
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/584b186f651e34097ab32320/default';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->                                  
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>                                    
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+</body>
+</html>
